@@ -1,0 +1,9 @@
+{
+  "appid": "your_wechat_appid",
+  "appsecret": "your_wechat_appsecret",
+  "account_name": "具身智能情报前沿",
+  "notes": [
+    "复制本文件为 wechat_config.json 后再填写真实 appid 和 appsecret。",
+    "官方建议每天上午 8 点后抓取前一天数据，以保证统计完整。"
+  ]
+}
