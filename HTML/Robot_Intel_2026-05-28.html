@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>微信公众号排版预览</title>
+<style>
+  body {
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  .action-bar {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 15px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .copy-btn {
+    background-color: #07c160;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .copy-btn:hover {
+    background-color: #06ad56;
+  }
+  .preview-container {
+    background-color: #fff;
+    padding: 20px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .hint {
+    color: #666;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+  <div class="action-bar">
+    <button id="copyBtn" class="copy-btn">🚀 一键复制到微信</button>
+    <span class="hint">请点击此按钮复制（不要手动Ctrl+A，会导致格式错乱）</span>
+  </div>
+
+  <div class="preview-container" id="previewContainer">
+    <style>.ͼ1.cm-focused {outline: 1px dotted #212121;}
+.ͼ1 {position: relative !important; box-sizing: border-box; display: flex !important; flex-direction: column;}
+.ͼ1 .cm-scroller {display: flex !important; align-items: flex-start !important; font-family: monospace; line-height: 1.4; height: 100%; overflow-x: auto; position: relative; z-index: 0; overflow-anchor: none;}
+.ͼ1 .cm-content[contenteditable=true] {-webkit-user-modify: read-write-plaintext-only;}
+.ͼ1 .cm-content {margin: 0; flex-grow: 2; flex-shrink: 0; display: block; white-space: pre; word-wrap: normal; box-sizing: border-box; min-height: 100%; padding: 4px 0; outline: none;}
+.ͼ1 .cm-lineWrapping {white-space: pre-wrap; white-space: break-spaces; word-break: break-word; overflow-wrap: anywhere; flex-shrink: 1;}
+.ͼ2 .cm-content {caret-color: black;}
+.ͼ3 .cm-content {caret-color: white;}
+.ͼ1 .cm-line {display: block; padding: 0 2px 0 6px;}
+.ͼ1 .cm-layer > * {position: absolute;}
+.ͼ1 .cm-layer {position: absolute; left: 0; top: 0; contain: size style;}
+.ͼ2 .cm-selectionBackground {background: #d9d9d9;}
+.ͼ3 .cm-selectionBackground {background: #222;}
+.ͼ2.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {background: #d7d4f0;}
+.ͼ3.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {background: #233;}
+.ͼ1 .cm-cursorLayer {pointer-events: none;}
+.ͼ1.cm-focused > .cm-scroller > .cm-cursorLayer {animation: steps(1) cm-blink 1.2s infinite;}
+@keyframes cm-blink {50% {opacity: 0;}}
+@keyframes cm-blink2 {50% {opacity: 0;}}
+.ͼ1 .cm-cursor, .ͼ1 .cm-dropCursor {border-left: 1.2px solid black; margin-left: -0.6px; pointer-events: none;}
+.ͼ1 .cm-cursor {display: none;}
+.ͼ3 .cm-cursor {border-left-color: #ddd;}
+.ͼ1 .cm-selectionHandle {background-color: currentColor; width: 1.5px;}
+.ͼ1 .cm-selectionHandle-start::before, .ͼ1 .cm-selectionHandle-end::before {content: ""; background-color: inherit; border-radius: 50%; width: 8px; height: 8px; position: absolute; left: -3.25px;}
+.ͼ1 .cm-selectionHandle-start::before {top: -8px;}
+.ͼ1 .cm-selectionHandle-end::before {bottom: -8px;}
+.ͼ1 .cm-dropCursor {position: absolute;}
+.ͼ1.cm-focused > .cm-scroller > .cm-cursorLayer .cm-cursor {display: block;}
+.ͼ1 .cm-iso {unicode-bidi: isolate;}
+.ͼ1 .cm-announced {position: fixed; top: -10000px;}
+@media print {.ͼ1 .cm-announced {display: none;}}
+.ͼ2 .cm-activeLine {background-color: #cceeff44;}
+.ͼ3 .cm-activeLine {background-color: #99eeff33;}
+.ͼ2 .cm-specialChar {color: red;}
+.ͼ3 .cm-specialChar {color: #f78;}
+.ͼ1 .cm-gutters {flex-shrink: 0; display: flex; height: 100%; box-sizing: border-box; z-index: 200;}
+.ͼ1 .cm-gutters-before {inset-inline-start: 0;}
+.ͼ1 .cm-gutters-after {inset-inline-end: 0;}
+.ͼ2 .cm-gutters.cm-gutters-before {border-right-width: 1px;}
+.ͼ2 .cm-gutters.cm-gutters-after {border-left-width: 1px;}
+.ͼ2 .cm-gutters {background-color: #f5f5f5; color: #6c6c6c; border: 0px solid #ddd;}
+.ͼ3 .cm-gutters {background-color: #333338; color: #ccc;}
+.ͼ1 .cm-gutter {display: flex !important; flex-direction: column; flex-shrink: 0; box-sizing: border-box; min-height: 100%; overflow: hidden;}
+.ͼ1 .cm-gutterElement {box-sizing: border-box;}
+.ͼ1 .cm-lineNumbers .cm-gutterElement {padding: 0 3px 0 5px; min-width: 20px; text-align: right; white-space: nowrap;}
+.ͼ2 .cm-activeLineGutter {background-color: #e2f2ff;}
+.ͼ3 .cm-activeLineGutter {background-color: #222227;}
+.ͼ1 .cm-panels {box-sizing: border-box; position: sticky; left: 0; right: 0; z-index: 300;}
+.ͼ2 .cm-panels {background-color: #f5f5f5; color: black;}
+.ͼ2 .cm-panels-top {border-bottom: 1px solid #ddd;}
+.ͼ2 .cm-panels-bottom {border-top: 1px solid #ddd;}
+.ͼ3 .cm-panels {background-color: #333338; color: white;}
+.ͼ1 .cm-dialog label {font-size: 80%;}
+.ͼ1 .cm-dialog {padding: 2px 19px 4px 6px; position: relative;}
+.ͼ1 .cm-dialog-close {position: absolute; top: 3px; right: 4px; background-color: inherit; border: none; font: inherit; font-size: 14px; padding: 0;}
+.ͼ1 .cm-tab {display: inline-block; overflow: hidden; vertical-align: bottom;}
+.ͼ1 .cm-widgetBuffer {vertical-align: text-top; height: 1em; width: 0; display: inline;}
+.ͼ1 .cm-placeholder {color: #888; display: inline-block; vertical-align: top; user-select: none;}
+.ͼ1 .cm-highlightSpace {background-image: radial-gradient(circle at 50% 55%, #aaa 20%, transparent 5%); background-position: center;}
+.ͼ1 .cm-highlightTab {background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="20"><path stroke="%23888" stroke-width="1" fill="none" d="M1 10H196L190 5M190 15L196 10M197 4L197 16"/></svg>'); background-size: auto 100%; background-position: right 90%; background-repeat: no-repeat;}
+.ͼ1 .cm-trailingSpace {background-color: #ff332255;}
+.ͼ1 .cm-button {vertical-align: middle; color: inherit; font-size: 70%; padding: .2em 1em; border-radius: 1px;}
+.ͼ2 .cm-button:active {background-image: linear-gradient(#b4b4b4, #d0d3d6);}
+.ͼ2 .cm-button {background-image: linear-gradient(#eff1f5, #d9d9df); border: 1px solid #888;}
+.ͼ3 .cm-button:active {background-image: linear-gradient(#111, #333);}
+.ͼ3 .cm-button {background-image: linear-gradient(#393939, #111); border: 1px solid #888;}
+.ͼ1 .cm-textfield {vertical-align: middle; color: inherit; font-size: 70%; border: 1px solid silver; padding: .2em .5em;}
+.ͼ2 .cm-textfield {background-color: white;}
+.ͼ3 .cm-textfield {border: 1px solid #555; background-color: inherit;}
+.ͼ2 {--indent-marker-bg-color: #F0F1F2; --indent-marker-active-bg-color: #E4E5E6;}
+.ͼ3 {--indent-marker-bg-color: #2B3245; --indent-marker-active-bg-color: #3C445C;}
+.ͼ1 .cm-line {position: relative;}
+.ͼ1 .cm-indent-markers::before {content: ""; position: absolute; top: 0; left: 2px; right: 0; bottom: 0; background: var(--indent-markers); pointer-events: none; z-index: -1;}
+.ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul > li, .ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul > completion-section {padding: 1px 3px; line-height: 1.2;}
+.ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul > li {overflow-x: hidden; text-overflow: ellipsis; cursor: pointer;}
+.ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul > completion-section {display: list-item; border-bottom: 1px solid silver; padding-left: 0.5em; opacity: 0.7;}
+.ͼ1 .cm-tooltip.cm-tooltip-autocomplete > ul {font-family: monospace; white-space: nowrap; overflow: hidden auto; max-width: 700px; max-width: min(700px, 95vw); min-width: 250px; max-height: 10em; height: 100%; list-style: none; margin: 0; padding: 0;}
+.ͼ2 .cm-tooltip-autocomplete ul li[aria-selected] {background: #17c; color: white;}
+.ͼ2 .cm-tooltip-autocomplete-disabled ul li[aria-selected] {background: #777;}
+.ͼ3 .cm-tooltip-autocomplete ul li[aria-selected] {background: #347; color: white;}
+.ͼ3 .cm-tooltip-autocomplete-disabled ul li[aria-selected] {background: #444;}
+.ͼ1 .cm-completionListIncompleteTop:before, .ͼ1 .cm-completionListIncompleteBottom:after {content: "···"; opacity: 0.5; display: block; text-align: center; cursor: pointer;}
+.ͼ1 .cm-tooltip.cm-completionInfo {position: absolute; padding: 3px 9px; width: max-content; max-width: 400px; box-sizing: border-box; white-space: pre-line;}
+.ͼ1 .cm-completionInfo.cm-completionInfo-left {right: 100%;}
+.ͼ1 .cm-completionInfo.cm-completionInfo-right {left: 100%;}
+.ͼ1 .cm-completionInfo.cm-completionInfo-left-narrow {right: 30px;}
+.ͼ1 .cm-completionInfo.cm-completionInfo-right-narrow {left: 30px;}
+.ͼ2 .cm-snippetField {background-color: #00000022;}
+.ͼ3 .cm-snippetField {background-color: #ffffff22;}
+.ͼ1 .cm-snippetFieldPosition {vertical-align: text-top; width: 0; height: 1.15em; display: inline-block; margin: 0 -0.7px -.7em; border-left: 1.4px dotted #888;}
+.ͼ1 .cm-completionMatchedText {text-decoration: underline;}
+.ͼ1 .cm-completionDetail {margin-left: 0.5em; font-style: italic;}
+.ͼ1 .cm-completionIcon {font-size: 90%; width: .8em; display: inline-block; text-align: center; padding-right: .6em; opacity: 0.6; box-sizing: content-box;}
+.ͼ1 .cm-completionIcon-function:after, .ͼ1 .cm-completionIcon-method:after {content: 'ƒ';}
+.ͼ1 .cm-completionIcon-class:after {content: '○';}
+.ͼ1 .cm-completionIcon-interface:after {content: '◌';}
+.ͼ1 .cm-completionIcon-variable:after {content: '𝑥';}
+.ͼ1 .cm-completionIcon-constant:after {content: '𝐶';}
+.ͼ1 .cm-completionIcon-type:after {content: '𝑡';}
+.ͼ1 .cm-completionIcon-enum:after {content: '∪';}
+.ͼ1 .cm-completionIcon-property:after {content: '□';}
+.ͼ1 .cm-completionIcon-keyword:after {content: '🔑︎';}
+.ͼ1 .cm-completionIcon-namespace:after {content: '▢';}
+.ͼ1 .cm-completionIcon-text:after {content: 'abc'; font-size: 50%; vertical-align: middle;}
+.ͼ1 .cm-tooltip {z-index: 500; box-sizing: border-box;}
+.ͼ2 .cm-tooltip {border: 1px solid #bbb; background-color: #f5f5f5;}
+.ͼ2 .cm-tooltip-section:not(:first-child) {border-top: 1px solid #bbb;}
+.ͼ3 .cm-tooltip {background-color: #333338; color: white;}
+.ͼ1 .cm-tooltip-arrow:before, .ͼ1 .cm-tooltip-arrow:after {content: ''; position: absolute; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent;}
+.ͼ1 .cm-tooltip-above .cm-tooltip-arrow:before {border-top: 7px solid #bbb;}
+.ͼ1 .cm-tooltip-above .cm-tooltip-arrow:after {border-top: 7px solid #f5f5f5; bottom: 1px;}
+.ͼ1 .cm-tooltip-above .cm-tooltip-arrow {bottom: -7px;}
+.ͼ1 .cm-tooltip-below .cm-tooltip-arrow:before {border-bottom: 7px solid #bbb;}
+.ͼ1 .cm-tooltip-below .cm-tooltip-arrow:after {border-bottom: 7px solid #f5f5f5; top: 1px;}
+.ͼ1 .cm-tooltip-below .cm-tooltip-arrow {top: -7px;}
+.ͼ1 .cm-tooltip-arrow {height: 7px; width: 14px; position: absolute; z-index: -1; overflow: hidden;}
+.ͼ3 .cm-tooltip .cm-tooltip-arrow:before {border-top-color: #333338; border-bottom-color: #333338;}
+.ͼ3 .cm-tooltip .cm-tooltip-arrow:after {border-top-color: transparent; border-bottom-color: transparent;}
+.ͼ1.cm-focused .cm-matchingBracket {background-color: #328c8252;}
+.ͼ1.cm-focused .cm-nonmatchingBracket {background-color: #bb555544;}
+.ͼ1 .cm-foldPlaceholder {background-color: #eee; border: 1px solid #ddd; color: #888; border-radius: .2em; margin: 0 1px; padding: 0 1px; cursor: pointer;}
+.ͼ1 .cm-foldGutter span {padding: 0 1px; cursor: pointer;}
+.ͼ2 {--indent-marker-bg-color: #F0F1F2; --indent-marker-active-bg-color: #E4E5E6;}
+.ͼ3 {--indent-marker-bg-color: #2B3245; --indent-marker-active-bg-color: #3C445C;}
+.ͼ1 .cm-line {position: relative;}
+.ͼ1 .cm-indent-markers::before {content: ""; position: absolute; top: 0; left: 2px; right: 0; bottom: 0; background: var(--indent-markers); pointer-events: none; z-index: -1;}
+.ͼ1 .cm-selectionMatch {background-color: #99ff7780;}
+.ͼ1 .cm-searchMatch .cm-selectionMatch {background-color: transparent;}
+.ͼ3q .cm-gutterElement {display: flex; justify-content: right; align-items: center;}
+.ͼ3q.cm-editor .cm-gutters {background-color: transparent !important; border-right: none !important; padding: 0 !important;}
+.ͼ3q .cm-foldGutter {width: 10px !important; overflow: hidden;}
+.ͼ3q .cm-foldGutter .cm-gutterElement {padding: 0 !important; width: 10px !important; min-width: unset !important;}
+.ͼ3q .cm-foldGutter .cm-gutterElement span {opacity: 0; transition: opacity 0.15s ease;}
+.ͼ3q.cm-editor .cm-gutters:hover .cm-foldGutter .cm-gutterElement span {opacity: 1;}
+.ͼ28 {color: #0064ff; font-weight: bold;}
+.ͼ29 {color: #af00db; font-weight: bold;}
+.ͼ2a {color: #0064ff; font-weight: bold;}
+.ͼ2b {color: #383a42;}
+.ͼ2c {color: #0070c1;}
+.ͼ2d {color: #0070c1; font-style: normal;}
+.ͼ2e {color: #267f99;}
+.ͼ2f {color: #267f99; font-style: normal;}
+.ͼ2g {color: #383a42; font-style: normal;}
+.ͼ2h {color: #383a42;}
+.ͼ2i {color: #383a42;}
+.ͼ2j {color: #383a42;}
+.ͼ2k {color: #383a42;}
+.ͼ2l {color: #795e26;}
+.ͼ2m {color: #795e26; font-style: normal;}
+.ͼ2n {color: #795e26;}
+.ͼ2o {color: #0070c1;}
+.ͼ2p {color: #098658;}
+.ͼ2q {color: #795e26;}
+.ͼ2r {color: #795e26; font-style: italic;}
+.ͼ2s {color: #0064ff; font-style: normal;}
+.ͼ2t {color: #0064ff;}
+.ͼ2u {color: #0070c1;}
+.ͼ2v {color: #0064ff;}
+.ͼ2w {color: #a31515;}
+.ͼ2x {color: #af00db;}
+.ͼ2y {color: #a31515;}
+.ͼ2z {color: #267f99; font-weight: bold;}
+.ͼ30 {color: #383a42;}
+.ͼ31 {color: #6b6b6b;}
+.ͼ32 {font-style: italic; color: #008000;}
+.ͼ33 {font-style: italic; color: #008000;}
+.ͼ34 {color: #0064ff;}
+.ͼ35 {color: #0070c1;}
+.ͼ36 {font-weight: bold; color: #0064ff;}
+.ͼ37 {color: #0064ff; font-weight: bold;}
+.ͼ38 {color: #0064ff;}
+.ͼ39 {color: #0064ff;}
+.ͼ3a {color: #0064ff;}
+.ͼ3b {color: #0064ff;}
+.ͼ3c {color: #0064ff;}
+.ͼ3d {font-weight: bold; color: #0064ff;}
+.ͼ3e {font-style: italic; color: #0070c1;}
+.ͼ3f {color: #9e46d0; text-decoration: underline; text-underline-position: under;}
+.ͼ3g {color: #006ab1; text-decoration: underline; text-underline-offset: 2px;}
+.ͼ3h {color: #383a42; text-decoration: underline wavy; border-bottom: 1px wavy #e51400;}
+.ͼ3i {color: #e51400; text-decoration: line-through;}
+.ͼ3j {color: #0070c1;}
+.ͼ3k {color: #e51400;}
+.ͼ3l {color: #383a42;}
+.ͼ3m {color: #383a42;}
+.ͼ3n {color: #383a42;}
+.ͼ3o {color: #383a42;}
+.ͼ3p {color: #008000;}
+.ͼ27 {color: #383a42; background-color: #ffffff; font-size: 14px; font-family: JetBrains Mono, Consolas, monospace;}
+.ͼ27 .cm-content {caret-color: #000000; line-height: 1.6;}
+.ͼ27 .cm-cursor, .ͼ27 .cm-dropCursor {border-left-color: #000000; border-left-width: 2px;}
+.ͼ27 .cm-fat-cursor {background-color: #00000099; color: #ffffff;}
+.ͼ27.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .ͼ27 .cm-selectionBackground, .ͼ27 .cm-content ::selection {background-color: #add6ff;}
+.ͼ27 .cm-selectionLayer {z-index: 100;}
+.ͼ27 .cm-searchMatch {background-color: #bbdefb; outline: 1px solid #0070c190; color: #1f1f1f; border-radius: 4px;}
+.ͼ27 .cm-searchMatch.cm-searchMatch-selected span {color: #1f1f1f;}
+.ͼ27 .cm-searchMatch.cm-searchMatch-selected {background-color: #90caf9; color: #1f1f1f; padding: 2px 6px;}
+.ͼ27 .cm-search.cm-panel.cm-textfield {color: #383a42; border-radius: 4px; padding: 2px 6px;}
+.ͼ27 .cm-panels {background-color: #f3f3f3; color: #383a42; border-radius: 3px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);}
+.ͼ27 .cm-panels.cm-panels-top {border-bottom: 1px solid #d6d6d6;}
+.ͼ27 .cm-panels.cm-panels-bottom {border-top: 1px solid #d6d6d6;}
+.ͼ27 .cm-panel button {background-color: #ffffff; color: #383a42; border: 1px solid #d6d6d6; border-radius: 4px; padding: 2px 10px;}
+.ͼ27 .cm-panel button:hover {background-color: #e8e8e8; border: 1px solid #6b6b6b80;}
+.ͼ27 .cm-activeLine {background-color: #99999926; border-radius: 2px; z-index: 1;}
+.ͼ27 .cm-gutters {background-color: #f5f5f5; color: #237893; border: none; border-right: 1px solid #d6d6d6; padding-right: 8px;}
+.ͼ27 .cm-activeLineGutter {background-color: #99999926; color: #0b216f; font-weight: 500;}
+.ͼ27 .cm-lineNumbers {font-size: 0.9em; line-height: 1.78;}
+.ͼ27 .cm-foldGutter {font-size: 0.9em; line-height: 1.78;}
+.ͼ27 .cm-foldGutter .cm-gutterElement {color: #237893; cursor: pointer;}
+.ͼ27 .cm-foldGutter .cm-gutterElement:hover {color: #0b216f;}
+.ͼ27 .cm-insertedLine {text-decoration: none; background-color: #ddfbe0; color: #22863a; padding: 1px 3px; border-radius: 3px;}
+.ͼ27 ins.cm-insertedLine, .ͼ27 ins.cm-insertedLine:not(:has(.cm-changedText)) {text-decoration: none; background-color: #ddfbe0 !important; color: #22863a; padding: 1px 3px; border-radius: 3px; border: 1px solid #22863a40;}
+.ͼ27 ins.cm-insertedLine .cm-changedText {background: transparent !important;}
+.ͼ27 .cm-deletedLine {text-decoration: line-through; background-color: #ffebec; color: #e51400; padding: 1px 3px; border-radius: 3px;}
+.ͼ27 del.cm-deletedLine, .ͼ27 del, .ͼ27 del:not(:has(.cm-deletedText)) {text-decoration: line-through; background-color: #ffebec !important; color: #e51400; padding: 1px 3px; border-radius: 3px; border: 1px solid #e5140040;}
+.ͼ27 del .cm-deletedText, .ͼ27 del .cm-changedText {background: transparent !important;}
+.ͼ27 .cm-tooltip {background-color: #f3f3f3; border: 1px solid #d6d6d6; border-radius: 4px; padding: 4px 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);}
+.ͼ27 .cm-tooltip-autocomplete > ul {background-color: #f3f3f3; border: none; max-height: 300px;}
+.ͼ27 .cm-tooltip-autocomplete > ul > li {padding: 4px 8px; line-height: 1.3;}
+.ͼ27 .cm-tooltip-autocomplete > ul > li[aria-selected] {background-color: #dcebfc; color: #1f1f1f; border-radius: 3px;}
+.ͼ27 .cm-tooltip-autocomplete > ul > li > span.cm-completionIcon {color: #6b6b6b; padding-right: 8px;}
+.ͼ27 .cm-tooltip-autocomplete > ul > li > span.cm-completionDetail {color: #6b6b6b; font-style: italic;}
+.ͼ27 .cm-tooltip .cm-tooltip-arrow:before {border-top-color: transparent; border-bottom-color: transparent;}
+.ͼ27 .cm-tooltip .cm-tooltip-arrow:after {border-top-color: #f3f3f3; border-bottom-color: #f3f3f3;}
+.ͼ27 .cm-diagnostic-error {border-left: 3px solid #e51400;}
+.ͼ27 .cm-diagnostic-warning {border-left: 3px solid #bf8803;}
+.ͼ27 .cm-diagnostic-info {border-left: 3px solid #006ab1;}
+.ͼ27 .cm-lintPoint-error {border-bottom: 2px wavy #e51400;}
+.ͼ27 .cm-lintPoint-warning {border-bottom: 2px wavy #bf8803;}
+.ͼ27 .cm-matchingBracket {background-color: #007acc20; outline: 1px solid #007acc80; border-radius: 2px;}
+.ͼ27 .cm-nonmatchingBracket {background-color: #e5140020; outline: 1px solid #e51400; border-radius: 2px;}
+.ͼ27 .cm-selectionMatch {background-color: #a8ac9480; outline: 1px solid #d6d6d670; border-radius: 2px;}
+.ͼ27 .cm-foldPlaceholder {background-color: #f3f3f3; color: #6b6b6b; border: 1px dotted #6b6b6b70; border-radius: 4px; padding: 0 5px; margin: 0 2px;}
+.ͼ27.cm-focused {outline: none; box-shadow: 0 0 0 1px #d6d6d6;}
+.ͼ27 .cm-scroller::-webkit-scrollbar {width: 12px; height: 12px;}
+.ͼ27 .cm-scroller::-webkit-scrollbar-track {background: #ffffff;}
+.ͼ27 .cm-scroller::-webkit-scrollbar-thumb {background-color: #dadada; border-radius: 6px; border: 3px solid #ffffff;}
+.ͼ27 .cm-scroller::-webkit-scrollbar-thumb:hover {background-color: #cccccc;}
+.ͼ27 .cm-ghostText {opacity: 0.5; color: #6b6b6b;}
+.ͼ5 {color: #404740;}
+.ͼ6 {text-decoration: underline;}
+.ͼ7 {text-decoration: underline; font-weight: bold;}
+.ͼ8 {font-style: italic;}
+.ͼ9 {font-weight: bold;}
+.ͼa {text-decoration: line-through;}
+.ͼb {color: #708;}
+.ͼc {color: #219;}
+.ͼd {color: #164;}
+.ͼe {color: #a11;}
+.ͼf {color: #e40;}
+.ͼg {color: #00f;}
+.ͼh {color: #30a;}
+.ͼi {color: #085;}
+.ͼj {color: #167;}
+.ͼk {color: #256;}
+.ͼl {color: #00c;}
+.ͼm {color: #940;}
+.ͼn {color: #f00;}
+.ͼ4 .cm-line ::selection, .ͼ4 .cm-line::selection {background-color: transparent !important;}
+.ͼ4 .cm-line {caret-color: transparent !important;}
+.ͼ4 .cm-content :focus::selection, .ͼ4 .cm-content :focus ::selection {background-color: Highlight !important;}
+.ͼ4 .cm-content :focus {caret-color: initial !important;}
+.ͼ4 .cm-content {caret-color: transparent !important;}
+</style><style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="md-theme">:root {
+  /* 动态配置变量 */
+  --md-primary-color: #0F4C81;
+  --md-font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  --md-font-size: 16px;
+}
+
+/* 段落缩进和对齐 */
+#output p {
+  
+  
+}
+
+/**
+ * MD 基础主题样式
+ * 包含所有元素的基础样式和 CSS 变量定义
+ */
+
+/* ==================== 容器样式 ==================== */
+section,
+container {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 确保 #output 容器应用基础样式 */
+#output {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 去除第一个元素的 margin-top */
+#output section > :first-child {
+  margin-top: 0 !important;
+}
+
+.mermaid-diagram .nodeLabel p {
+  color: unset !important;
+  letter-spacing: unset !important;
+}
+
+
+#output /**
+ * MD 默认主题（经典主题）
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 #0F4C81 代替颜色值
+ */
+
+/* ==================== 一级标题 ==================== */
+h1 {
+  display: table;
+  padding: 0 1em;
+  border-bottom: 2px solid #0F4C81;
+  margin: 2em auto 1em;
+  color: hsl(var(--foreground));
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}#output /* ==================== 二级标题 ==================== */
+h2 {
+  display: table;
+  padding: 0 0.2em;
+  margin: 4em auto 2em;
+  color: #fff;
+  background: #0F4C81;
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}#output /* ==================== 三级标题 ==================== */
+h3 {
+  padding-left: 8px;
+  border-left: 3px solid #0F4C81;
+  margin: 2em 8px 0.75em 0;
+  color: hsl(var(--foreground));
+  font-size: 17.6px;
+  font-weight: bold;
+  line-height: 1.2;
+}#output /* ==================== 四级标题 ==================== */
+h4 {
+  margin: 2em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}#output /* ==================== 五级标题 ==================== */
+h5 {
+  margin: 1.5em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}#output /* ==================== 六级标题 ==================== */
+h6 {
+  margin: 1.5em 8px 0.5em;
+  font-size: 16px;
+  color: #0F4C81;
+}#output /* ==================== 段落 ==================== */
+p {
+  margin: 1.5em 8px;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+}#output /* ==================== 引用块 ==================== */
+blockquote {
+  font-style: normal;
+  padding: 1em;
+  border-left: 4px solid #0F4C81;
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+  background: var(--blockquote-background);
+  margin-bottom: 1em;
+}#output blockquote > p {
+  display: block;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+  margin: 0;
+}#output /* ==================== GFM 警告块 ==================== */
+.alert-title-note,
+#output .alert-title-tip,
+#output .alert-title-info,
+#output .alert-title-important,
+#output .alert-title-warning,
+#output .alert-title-caution,
+#output .alert-title-abstract,
+#output .alert-title-summary,
+#output .alert-title-tldr,
+#output .alert-title-todo,
+#output .alert-title-success,
+#output .alert-title-done,
+#output .alert-title-question,
+#output .alert-title-help,
+#output .alert-title-faq,
+#output .alert-title-failure,
+#output .alert-title-fail,
+#output .alert-title-missing,
+#output .alert-title-danger,
+#output .alert-title-error,
+#output .alert-title-bug,
+#output .alert-title-example,
+#output .alert-title-quote,
+#output .alert-title-cite {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}#output .alert-title-note {
+  color: #478be6;
+}#output .alert-title-tip {
+  color: #57ab5a;
+}#output .alert-title-info {
+  color: #93c5fd;
+}#output .alert-title-important {
+  color: #986ee2;
+}#output .alert-title-warning {
+  color: #c69026;
+}#output .alert-title-caution {
+  color: #e5534b;
+}#output /* Obsidian-style callout colors */
+.alert-title-abstract,
+#output .alert-title-summary,
+#output .alert-title-tldr {
+  color: #00bfff;
+}#output .alert-title-todo {
+  color: #478be6;
+}#output .alert-title-success,
+#output .alert-title-done {
+  color: #57ab5a;
+}#output .alert-title-question,
+#output .alert-title-help,
+#output .alert-title-faq {
+  color: #c69026;
+}#output .alert-title-failure,
+#output .alert-title-fail,
+#output .alert-title-missing {
+  color: #e5534b;
+}#output .alert-title-danger,
+#output .alert-title-error {
+  color: #e5534b;
+}#output .alert-title-bug {
+  color: #e5534b;
+}#output .alert-title-example {
+  color: #986ee2;
+}#output .alert-title-quote,
+#output .alert-title-cite {
+  color: #9ca3af;
+}#output /* GFM Alert SVG 图标颜色 */
+.alert-icon-note {
+  fill: #478be6;
+}#output .alert-icon-tip {
+  fill: #57ab5a;
+}#output .alert-icon-info {
+  fill: #93c5fd;
+}#output .alert-icon-important {
+  fill: #986ee2;
+}#output .alert-icon-warning {
+  fill: #c69026;
+}#output .alert-icon-caution {
+  fill: #e5534b;
+}#output /* Obsidian-style callout icon colors */
+.alert-icon-abstract,
+#output .alert-icon-summary,
+#output .alert-icon-tldr {
+  fill: #00bfff;
+}#output .alert-icon-todo {
+  fill: #478be6;
+}#output .alert-icon-success,
+#output .alert-icon-done {
+  fill: #57ab5a;
+}#output .alert-icon-question,
+#output .alert-icon-help,
+#output .alert-icon-faq {
+  fill: #c69026;
+}#output .alert-icon-failure,
+#output .alert-icon-fail,
+#output .alert-icon-missing {
+  fill: #e5534b;
+}#output .alert-icon-danger,
+#output .alert-icon-error {
+  fill: #e5534b;
+}#output .alert-icon-bug {
+  fill: #e5534b;
+}#output .alert-icon-example {
+  fill: #986ee2;
+}#output .alert-icon-quote,
+#output .alert-icon-cite {
+  fill: #9ca3af;
+}#output /* ==================== 代码块 ==================== */
+pre.code__pre,
+#output .hljs.code__pre {
+  font-size: 90%;
+  overflow-x: auto;
+  border-radius: 8px;
+  padding: 0 !important;
+  line-height: 1.5;
+  margin: 10px 8px;
+}#output /* ==================== 图片 ==================== */
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0.1em auto 0.5em;
+  border-radius: 4px;
+}#output /* ==================== 列表 ==================== */
+ol {
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}#output ul {
+  list-style: circle;
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}#output li {
+  display: block;
+  margin: 0.2em 8px;
+  color: hsl(var(--foreground));
+}#output /* ==================== 脚注 ==================== */
+/* footnotes 在 buildFootnotes() 中渲染为 <p> 标签 */
+p.footnotes {
+  margin: 0.5em 8px;
+  font-size: 80%;
+  color: hsl(var(--foreground));
+}#output /* ==================== 图表 ==================== */
+figure {
+  margin: 1.5em 8px;
+  color: hsl(var(--foreground));
+}#output figcaption,
+#output .md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}#output /* ==================== 分隔线 ==================== */
+hr {
+  border-style: solid;
+  border-width: 2px 0 0;
+  border-color: rgba(0, 0, 0, 0.1);
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(1, 0.5);
+  transform-origin: 0 0;
+  transform: scale(1, 0.5);
+  height: 0.4em;
+  margin: 1.5em 0;
+}#output /* ==================== 行内代码 ==================== */
+code {
+  font-size: 90%;
+  color: #d14;
+  background: rgba(27, 31, 35, 0.05);
+  padding: 3px 5px;
+  border-radius: 4px;
+}#output /* 代码块内的 code 标签需要特殊处理（覆盖行内 code 样式） */
+pre.code__pre > code,
+#output .hljs.code__pre > code {
+  display: -webkit-box;
+  padding: 0.5em 1em 1em;
+  overflow-x: auto;
+  text-indent: 0;
+  color: inherit;
+  background: none;
+  white-space: nowrap;
+  margin: 0;
+}#output /* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}#output /* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}#output /* ==================== 粗体 ==================== */
+strong {
+  color: #0F4C81;
+  font-weight: bold;
+  font-size: inherit;
+}#output /* ==================== 表格 ==================== */
+table {
+  color: hsl(var(--foreground));
+}#output thead {
+  font-weight: bold;
+  color: hsl(var(--foreground));
+}#output th {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+  background: rgba(0, 0, 0, 0.05);
+}#output td {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+}#output /* ==================== KaTeX 公式 ==================== */
+.katex-inline {
+  max-width: 100%;
+  overflow-x: auto;
+}#output .katex-block {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5em 0;
+  text-align: center;
+}#output /* ==================== 标记高亮 ==================== */
+.markup-highlight {
+  background-color: #0F4C81;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: #fff;
+}#output .markup-underline {
+  text-decoration: underline;
+  text-decoration-color: #0F4C81;
+}#output .markup-wavyline {
+  text-decoration: underline wavy;
+  text-decoration-color: #0F4C81;
+  text-decoration-thickness: 2px;
+}
+
+
+#output /**
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 #0F4C81 代替颜色值
+ * 如：color: #0F4C81;
+ * 新主题系统已全面支持 CSS 写法，你可以 F12 打开控制台查看具体的类名及标签
+ *
+ * 召集令：如果你有好看的主题样式，欢迎分享，让更多人能够使用到你的主题。
+ * 提交区：https://github.com/doocs/md/discussions/426
+ */
+
+/* 全局变量定义 */
+:root {
+}#output /* 根容器 */
+.md-container {
+}#output /* 标题样式 */
+h1 {
+}#output section h2 {
+}#output section h3 {
+}#output section h4 {
+}#output section h5 {
+}#output section h6 {
+}#output /* 段落和文本 */
+p {
+}#output strong {
+}#output em {
+}#output /* 引用块 */
+blockquote {
+}#output blockquote > p {
+}#output /* 代码 */
+/* 行内代码 */
+code {
+}#output /* 代码块容器 */
+pre.code__pre,
+#output .hljs.code__pre {
+}#output /* 代码块内的 code */
+pre.code__pre > code,
+#output .hljs.code__pre > code {
+}#output /* 列表 */
+ol {
+}#output ul {
+}#output li {
+}#output /* 表格 */
+table {
+}#output thead {
+}#output th {
+}#output td {
+}#output /* 其他元素 */
+img {
+}#output hr {
+}#output /* 分隔线变体：--- */
+hr.hr-dash {
+}#output /* 分隔线变体：*** */
+hr.hr-star {
+}#output /* 分隔线变体：___ */
+hr.hr-underscore {
+}#output figure {
+}#output figcaption {
+}#output /* KaTeX 公式 */
+.katex-inline {
+}#output .katex-block {
+}#output /* Markup 标记 */
+/* 高亮 ==文本== */
+.markup-highlight {
+}#output /* 下划线 ++文本++ */
+.markup-underline {
+}#output /* 波浪线 ~文本~ */
+.markup-wavyline {
+}#output /* GFM Alert 警告块 */
+/* Alert 标题 */
+.alert-title-note {
+}#output .alert-title-tip {
+}#output .alert-title-info {
+}#output .alert-title-important {
+}#output .alert-title-warning {
+}#output .alert-title-caution {
+}#output .alert-title-abstract {
+}#output .alert-title-summary {
+}#output .alert-title-tldr {
+}#output .alert-title-todo {
+}#output .alert-title-success {
+}#output .alert-title-done {
+}#output .alert-title-question {
+}#output .alert-title-help {
+}#output .alert-title-faq {
+}#output .alert-title-failure {
+}#output .alert-title-fail {
+}#output .alert-title-missing {
+}#output .alert-title-danger {
+}#output .alert-title-error {
+}#output .alert-title-bug {
+}#output .alert-title-example {
+}#output .alert-title-quote {
+}#output .alert-title-cite {
+}#output /* Alert SVG 图标 */
+.alert-icon-note {
+}#output .alert-icon-tip {
+}#output .alert-icon-info {
+}#output .alert-icon-important {
+}#output .alert-icon-warning {
+}#output .alert-icon-caution {
+}#output /* Obsidian-style Callout SVG 图标 */
+.alert-icon-abstract {
+}#output .alert-icon-summary {
+}#output .alert-icon-tldr {
+}#output .alert-icon-todo {
+}#output .alert-icon-success {
+}#output .alert-icon-done {
+}#output .alert-icon-question {
+}#output .alert-icon-help {
+}#output .alert-icon-faq {
+}#output .alert-icon-failure {
+}#output .alert-icon-fail {
+}#output .alert-icon-missing {
+}#output .alert-icon-danger {
+}#output .alert-icon-error {
+}#output .alert-icon-bug {
+}#output .alert-icon-example {
+}#output .alert-icon-quote {
+}#output .alert-icon-cite {
+}
+</style><style id="MJX-SVG-styles">
+mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][display="true"][width="full"] {
+  display: flex;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line], svg[data-table] > g > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame], svg[data-table] > g > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed, svg[data-table] > g > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted, svg[data-table] > g > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > g > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
+  stroke-width: 3;
+}
+</style><section data-v-5ce452a0="" id="output" class="w-full"><section class="container mx-auto"><h1 class="h1" data-heading="true" id="0">具身智能情报前沿｜机器人学习进入分钟级微调</h1><p class="p"><strong class="strong">作者：具身视界</strong> · 2026.05.28</p><blockquote class="blockquote"><p class="p">今天机器人学习最值得看的变化，是“先预训练、再少量真机微调”的路线正在加速走向工程化。相比从零训练策略，新的 VLA 强化学习微调、关键点模仿学习、视觉强化学习和仿真批量运行工具，都在回答同一个问题：怎样用更少真机时间、更低算力和更可复现的数据，让机器人可靠学会新任务。</p></blockquote><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="1">💥 今日重磅</h2><h3 class="h3" data-heading="true" id="2"><a href="https://arxiv.org/abs/2605.25477" title="EXPO-FT用平均19.1分钟真机数据微调VLA，三类高难任务全部达到30/30成功">EXPO-FT用平均19.1分钟真机数据微调VLA，三类高难任务全部达到30/30成功</a></h3><p class="p"><strong class="strong">摘要：</strong> 5 月 25 日提交的 <code class="codespan">EXPO-FT: Sample-Efficient Reinforcement Learning Finetuning for Vision-Language-Action Models</code> 直指机器人学习落地中的核心痛点：预训练 VLA 模型具备泛化能力，但真实部署仍常常不够可靠；强化学习微调能补上最后一段能力，却往往真机样本成本高、训练不稳定。EXPO-FT 提出面向预训练 VLA 策略的稳定、样本高效 RL 微调系统，评估任务包括串灯走线并插头点亮、击打台球入袋、把花插入酒瓶等，需要高精度、动态动作和对初始状态变化的鲁棒性。论文报告称，系统在所有评估任务上达到 <code class="codespan">30/30</code> 完美成功，平均只需 <code class="codespan">19.1</code> 分钟在线机器人数据，并优于从零 RL 和既有 VLA 微调方法。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> arXiv / 开源代码计划</li><li class="listitem">• <strong class="strong">核心价值：</strong> 这条进展说明，机器人学习正在从“堆海量示范”走向“预训练策略 + 少量在线强化”的闭环范式。真正重要的不是单次演示成功，而是能否在几十分钟真机数据内，把通用模型变成可靠执行器。</li></ul><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="3">📰 行业新闻</h2><h3 class="h3" data-heading="true" id="4">1. <a href="https://arxiv.org/abs/2605.26649" title="关键点模仿学习用2000+真实rollout验证泛化，五类任务总体成功率达到75%">关键点模仿学习用2000+真实rollout验证泛化，五类任务总体成功率达到75%</a></h3><p class="p"><strong class="strong">摘要：</strong> 5 月 26 日提交的 <code class="codespan">On the Generalization Capabilities, Design Choices and Limitations of Keypoint Imitation Learning</code> 系统研究关键点模仿学习 <code class="codespan">KIL</code> 的设计选择、泛化能力与局限。团队利用视觉基础模型抽取关键点作为中间表征，并在 <code class="codespan">2000+</code> 次真实世界 rollout 上评估对未知物体和场景变化的泛化。结果显示，KIL 在五类任务上的总体成功率为 <code class="codespan">75%</code>，显著高于 RGB 基线的 <code class="codespan">47%</code>，并与 S2-diffusion 的 <code class="codespan">73%</code> 接近。项目页还公开 rollout 视频、示范和结果。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> arXiv / KIL 项目页</li><li class="listitem">• <strong class="strong">核心价值：</strong> 这是今天的数据相关报道。机器人学习不是只有端到端 RGB 输入一条路；关键点等中间表征可以显著提升数据效率，但也会继承基础模型抽点失败、实例混淆等局限。</li></ul><h3 class="h3" data-heading="true" id="5">2. <a href="https://arxiv.org/abs/2605.24922" title="MuJoCoUni发布批量运行原语，面向在线机器人学习提升仿真吞吐">MuJoCoUni发布批量运行原语，面向在线机器人学习提升仿真吞吐</a></h3><p class="p"><strong class="strong">摘要：</strong> <code class="codespan">MuJoCoUni: Persistent Batched Runtime Primitives for MuJoCo</code> 是面向在线机器人学习和批量物理评估的 MuJoCo 下游发行版。其核心组件 <code class="codespan">BatchEnvPool</code> 通过 C++ / pybind11 执行器管理多环境 <code class="codespan">mjModel</code> 副本、线程池和每线程 <code class="codespan">mjData</code>，支持有状态环境执行、稀疏 reset、domain randomization、批量传感器前向计算、批量 Jacobian 和 height-field 查询。包可通过 <code class="codespan">pip install mujoco-uni</code> 安装。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> arXiv / mujoco-uni 开源包</li><li class="listitem">• <strong class="strong">核心价值：</strong> 机器人学习越来越依赖大规模仿真并行与快速评估。MuJoCoUni 的价值不在于提出新策略，而在于把在线学习所需的批量环境执行变成更稳定的基础设施。</li></ul><h3 class="h3" data-heading="true" id="6">3. <a href="https://arxiv.org/abs/2605.27046" title="热安全进入强化学习目标，Unitree A1负载行走从约5分钟过热延长到13分钟以上">热安全进入强化学习目标，Unitree A1负载行走从约5分钟过热延长到13分钟以上</a></h3><p class="p"><strong class="strong">摘要：</strong> <code class="codespan">Learning to Balance Motor Thermal Safety and Quadrupedal Locomotion Performance with Residual Policy</code> 将电机热模型引入四足机器人强化学习。方法先预训练一个能跨地形行走的 nominal policy，再在其上训练 residual policy，根据机器人热状态给出纠正动作，在低温时保持性能、高温时避免电机过热。真实 Unitree A1 实验显示，在 <code class="codespan">3 kg</code> 负载下，机器人可跨多地形稳定行走 <code class="codespan">13</code> 分钟以上；仅使用 nominal policy 时约 <code class="codespan">5</code> 分钟出现电机过热。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> arXiv</li><li class="listitem">• <strong class="strong">核心价值：</strong> 这说明机器人学习的目标函数正在从“走得快、成功率高”扩展到“能长时间可靠运行”。热安全、能耗和维护成本会越来越多地进入部署级策略训练。</li></ul><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="7">📑 前沿论文</h2><h3 class="h3" data-heading="true" id="8">1. <a href="https://arxiv.org/abs/2605.26478" title="SDPG让视觉强化学习在单张RTX 4080上数小时完成训练">SDPG让视觉强化学习在单张RTX 4080上数小时完成训练</a></h3><p class="p"><strong class="strong">摘要：</strong> <code class="codespan">Efficient On-policy Visual-RL via Stochastic Decoupled Policy Gradient</code> 提出随机解耦策略梯度 <code class="codespan">SDPG</code>，用于端到端训练视觉运动控制策略。该方法通过轨迹 rollout 的随机扰动估计策略梯度，显著减少批量渲染环境需求，降低计算和显存开销。论文称，SDPG 可在单张 <code class="codespan">NVIDIA RTX 4080</code> 上数小时内训练多类视觉机器人策略，并在视觉 MuJoCo 基准上优于基线方法，同时引入覆盖灵巧操作和挑战性移动的真实感视觉机器人基准，并展示 sim-to-real 迁移。</p><ul class="ul"><li class="listitem">• <strong class="strong">作者团队：</strong> Haoxiang You、Yilang Liu、Davis Zong、Qian Wang、Daniel Rakita、Ian Abraham 等</li><li class="listitem">• <strong class="strong">来源：</strong> arXiv</li><li class="listitem">• <strong class="strong">核心价值：</strong> 如果视觉 RL 能从多卡高成本实验降到单卡数小时，更多实验室就能复现实验并迭代策略。算力门槛下降会直接改变机器人学习社区的创新速度。</li></ul><h3 class="h3" data-heading="true" id="9">2. <a href="https://arxiv.org/abs/2605.25782" title="ParkourFormer用未来状态预测提升人形跑酷，通过率达到93.85%">ParkourFormer用未来状态预测提升人形跑酷，通过率达到93.85%</a></h3><p class="p"><strong class="strong">摘要：</strong> <code class="codespan">ParkourFormer</code> 将人形机器人跑酷建模为未来条件决策问题。传统强化学习策略多为反应式，直接从当前观测映射到动作；但楼梯、沟壑、斜坡和障碍等场景需要机器人提前预判接触转换和身体动力学。ParkourFormer 使用 Transformer 序列建模，当前状态通过 cross-attention 查询历史传感运动轨迹，并由轻量预测头预测短时未来本体状态，再将预测状态与时序特征融合生成动作。仿真和真实人形机器人实验显示，其在多地形跑酷基准上平均通过率达到 <code class="codespan">93.85%</code>，相对强基线最高提升 <code class="codespan">42.73%</code>。</p><ul class="ul"><li class="listitem">• <strong class="strong">作者团队：</strong> Yanheng Mai、Wenhao Xu、Zirui Huang、Yifei Fu、Shengwei Dong 等</li><li class="listitem">• <strong class="strong">来源：</strong> arXiv</li><li class="listitem">• <strong class="strong">核心价值：</strong> 人形机器人学习正在从纯反应控制走向“带预测的小脑”。未来状态建模会成为高动态运动和复杂地形泛化的关键能力。</li></ul><h3 class="h3" data-heading="true" id="10">3. <a href="https://arxiv.org/abs/2605.26784" title="R²VPO用策略比率方差约束改进强化学习，覆盖10个机器人控制任务">R²VPO用策略比率方差约束改进强化学习，覆盖10个机器人控制任务</a></h3><p class="p"><strong class="strong">摘要：</strong> <code class="codespan">Ratio-Variance Regularized Policy Optimization</code> 重新审视 on-policy 强化学习中常见的 clipping 机制。作者认为硬截断会同时压制高回报但高偏移的更新，因此提出通过显式约束策略比率方差，作为信任域约束的局部近似，形成一种分布式“软刹车”。论文在 <code class="codespan">7</code> 个 LLM 规模和 <code class="codespan">10</code> 个机器人控制任务上评估，显示 R²VPO 在连续控制、稀疏奖励和动态环境中相对 PPO 基线具有更好的样本效率和表现。</p><ul class="ul"><li class="listitem">• <strong class="strong">作者团队：</strong> Yu Luo、Shuo Han、Yihan Hu、Lei Lv、Huaping Liu、Fuchun Sun 等</li><li class="listitem">• <strong class="strong">来源：</strong> arXiv</li><li class="listitem">• <strong class="strong">核心价值：</strong> 机器人强化学习不仅需要更大模型，也需要更稳定的优化器。策略更新机制的改进，可能直接影响稀疏奖励任务和真实机器人在线微调的可用性。</li></ul><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="11">💻 开源生态</h2><h3 class="h3" data-heading="true" id="12">1. <a href="https://kil-manipulation.github.io/" title="KIL项目页公开rollout视频、示范和结果，推动关键点模仿学习复现">KIL项目页公开rollout视频、示范和结果，推动关键点模仿学习复现</a></h3><p class="p"><strong class="strong">摘要：</strong> KIL 项目页配套公开五类真实机器人任务中的 rollout 视频、示范数据和实验结果。该工作用超过 <code class="codespan">2000</code> 次真实 rollout 比较关键点表征、RGB 基线和扩散策略等路线，并进一步讨论多实例场景中的关键点抽取限制。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> KIL 项目页</li><li class="listitem">• <strong class="strong">核心价值：</strong> 机器人学习的复现难点常常不在模型代码，而在数据和真实失败样例。公开 rollout 视频和示范可以帮助社区理解策略为什么成功、为什么失败。</li></ul><h3 class="h3" data-heading="true" id="13">2. <a href="https://arxiv.org/abs/2605.24922" title="MuJoCoUni提供pip包，面向高吞吐在线学习和批量物理评估">MuJoCoUni提供pip包，面向高吞吐在线学习和批量物理评估</a></h3><p class="p"><strong class="strong">摘要：</strong> MuJoCoUni 把批量环境运行、稀疏 reset、domain randomization 和批量传感器前向等能力封装到 Python 绑定层，保持 MuJoCo 求解器、接触模型、积分器和核心源码语义不变。其定位是为在线机器人学习提供更高吞吐的底层 runtime，而不是替换上游 MuJoCo。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> arXiv / <code class="codespan">mujoco-uni</code></li><li class="listitem">• <strong class="strong">核心价值：</strong> 随着 RL 微调、仿真数据生成和策略评估并行化需求上升，底层仿真运行时会成为机器人学习基础设施竞争的一部分。</li></ul><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="14">🏢 机器人公司情报</h2><h3 class="h3" data-heading="true" id="15">1. <a href="https://finance.sina.com.cn/roll/2026-05-19/doc-inhymqch0000672.shtml" title="矩阵超智WAVE强调失误数据闭环，机器人学习从成功示范走向失败样本利用">矩阵超智WAVE强调失误数据闭环，机器人学习从成功示范走向失败样本利用</a></h3><p class="p"><strong class="strong">摘要：</strong> 近期报道提到，矩阵超智 <code class="codespan">WAVE</code> 物理基座模型强调零样本泛化和失误学习闭环，并通过自研数据采集与生成技术提升数据积累速度。公开信息显示，该体系目标是将数据积累速度提升 <code class="codespan">10</code> 倍，并把数据成本降低 <code class="codespan">90%</code>。其训练样本体系中包含大量失误数据，用于改进模型泛化和纠错能力。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> 新浪财经</li><li class="listitem">• <strong class="strong">核心价值：</strong> 机器人学习不能只学习成功轨迹。抓偏、碰撞、停顿、过热、误识别等失败样本，正在变成提升部署可靠性的核心资产。</li></ul><h3 class="h3" data-heading="true" id="16">2. <a href="https://finance.sina.com.cn/jjxw/2026-05-19/doc-inhykxfr2317152.shtml" title="MATRIX-3进入量产交付叙事，真实客户现场将倒逼在线学习与快速适配">MATRIX-3进入量产交付叙事，真实客户现场将倒逼在线学习与快速适配</a></h3><p class="p"><strong class="strong">摘要：</strong> <code class="codespan">MATRIX-3</code> 标准版定价 <code class="codespan">58</code> 万元起，PRO 版包含灵巧手，定价 <code class="codespan">68</code> 万元起，计划 2026 年三季度量产交付，年内交付目标约 <code class="codespan">1000</code> 台。进入交付阶段后，不同客户现场的物体、光照、工位布局和任务节奏都会产生分布偏移，要求机器人具备快速适配和持续学习能力。</p><ul class="ul"><li class="listitem">• <strong class="strong">来源：</strong> 新浪财经</li><li class="listitem">• <strong class="strong">核心价值：</strong> 量产会把机器人学习从实验室 benchmark 推向现场运维问题。谁能更快完成小样本适配、在线微调和失败回流，谁就更可能把机器人留在客户现场。</li></ul><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="17">结尾总结</h2><p class="p">今天这期机器人学习情报里，最清晰的趋势是：机器人学习正在从“收集更多数据、训练更大模型”，走向“更高效地使用每一分钟真机数据”。</p><p class="p">EXPO-FT 用平均 <code class="codespan">19.1</code> 分钟在线机器人数据完成 VLA 强化学习微调，KIL 用 <code class="codespan">2000+</code> 真实 rollout 证明关键点表征能显著提升数据效率，SDPG 把视觉 RL 训练压到单卡数小时，MuJoCoUni 则补上高吞吐仿真运行时。部署侧，热安全 residual policy 和 MATRIX-3 的量产叙事都说明：机器人学习的目标不只是学会任务，而是低成本、可复现、可持续地适应真实世界。下一阶段的关键问题是，<strong class="strong">谁能把数据采集、仿真评估、在线微调和失败回流连成一个闭环。</strong></p><hr class="hr hr-dash"><blockquote class="blockquote"><p class="p">💬 <strong class="strong">互动问题：你认为机器人学习最应该优先突破哪一环？更便宜的数据采集、更真实的仿真、更稳定的RL微调，还是更强的失败样本利用？欢迎留言聊聊你的判断。</strong></p></blockquote><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="18">关键词索引</h2><p class="p"><strong class="strong">公司：</strong> 矩阵超智、Unitree、KIL 团队、EXPO-FT 团队、MuJoCoUni 团队、ParkourFormer 团队<br><strong class="strong">技术：</strong> 机器人学习、强化学习微调、模仿学习、关键点表征、视觉强化学习、仿真批量运行、残差策略、热安全、未来状态预测、策略优化、失败数据闭环<br><strong class="strong">产品：</strong> EXPO-FT、KIL、MuJoCoUni、BatchEnvPool、SDPG、ParkourFormer、R²VPO、WAVE、MATRIX-3、Unitree A1、NVIDIA RTX 4080</p><hr class="hr hr-dash"><h2 class="h2" data-heading="true" id="19">值得分享</h2><ol class="ol"><li class="listitem">1. <strong class="strong">机器人学习进入分钟级真机微调：</strong> EXPO-FT 平均只用 <code class="codespan">19.1</code> 分钟在线机器人数据，就在三类高难操作任务上达到 <code class="codespan">30/30</code> 成功。</li><li class="listitem">2. <strong class="strong">中间表征仍然有价值：</strong> KIL 在 <code class="codespan">2000+</code> 真实 rollout 上达到 <code class="codespan">75%</code> 总体成功率，明显高于 RGB 基线的 <code class="codespan">47%</code>。</li><li class="listitem">3. <strong class="strong">部署目标正在变复杂：</strong> Unitree A1 加入热安全 residual policy 后，<code class="codespan">3 kg</code> 负载下跨地形稳定行走从约 <code class="codespan">5</code> 分钟过热延长到 <code class="codespan">13</code> 分钟以上。</li></ol>
+    <style>
+      .preview-wrapper pre::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #ccc;
+        text-align: center;
+        font-size: 0.8em;
+        padding: 5px 10px 0;
+        line-height: 15px;
+        height: 15px;
+        font-weight: 600;
+      }
+    </style>
+  
+    <style>
+      .hljs.code__pre > .mac-sign {
+        display: none;
+      }
+    </style>
+  
+    <style>
+      h2 strong {
+        color: inherit !important;
+      }
+    </style>
+  </section></section>
+  </div>
+
+  <script>
+    document.getElementById('copyBtn').addEventListener('click', async function() {
+      const contentElement = document.getElementById('wx-box') || document.querySelector('.wx-box') || document.getElementById('output');
+      if (!contentElement) {
+          alert("找不到渲染内容！可能提取失败。");
+          return;
+      }
+      
+      // 非常关键：这里不仅要把 contentElement.outerHTML 放进去
+      // 如果有挂载的全局 <style> 标签（Doocs 很喜欢把微信的类名样式写在这里），也需要带进剪贴板里
+      let htmlToCopy = '';
+      document.querySelectorAll('style').forEach(s => {
+         if (s.innerText.includes('wx-box') || s.innerText.includes('.h1') || s.innerText.includes('output')) { htmlToCopy += s.outerHTML; }
+      });
+      htmlToCopy += contentElement.outerHTML;
+      
+      const text = contentElement.innerText;
+      
+      try {
+        // 使用 ClipboardItem 强行只写入纯正的富文本格式，规避浏览器自动附加的无关样式
+        const clipboardItem = new ClipboardItem({
+          'text/html': new Blob([htmlToCopy], { type: 'text/html' }),
+          'text/plain': new Blob([text], { type: 'text/plain' })
+        });
+        await navigator.clipboard.write([clipboardItem]);
+        
+        const btn = document.getElementById('copyBtn');
+        const originalText = btn.innerText;
+        btn.innerText = "✅ 复制成功！去粘贴吧";
+        btn.style.backgroundColor = "#ff9800";
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = "#07c160";
+        }, 3000);
+        
+      } catch (err) {
+        console.error('Clipboard API failed', err);
+        // 兼容性降级方案
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(contentElement);
+        // 如果有 fallback，我们最好创建一个临时隐藏容器包含 style 和 body
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlToCopy;
+        document.body.appendChild(tempDiv);
+        range.selectNodeContents(tempDiv);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        try {
+            document.execCommand('copy');
+            alert("已使用降级方案复制成功！");
+        } catch (e) {
+            alert("复制失败，您的浏览器不支持此操作。");
+        }
+        selection.removeAllRanges();
+        document.body.removeChild(tempDiv);
+      }
+    });
+  </script>
+</body>
+</html>
