@@ -1,6 +1,6 @@
 ---
 name: robot-intel-collector
-description: 收集并整理具身智能与机器人领域的行业新闻、前沿论文、GitHub 开源动态和公司情报，生成适合微信公众号发布的中文日报。适用于用户要求收集机器人情报、监控具身智能趋势、生成机器人日报，或产出可直接用于微信发布的 Markdown / HTML 内容时。
+description: 收集并整理具身智能与机器人领域的行业新闻、前沿论文、GitHub 开源动态和公司情报，生成适合微信公众号发布的中文日报。适用于用户要求收集机器人情报、监控具身智能趋势、生成机器人日报，或产出可直接用于微信发布的 Markdown 内容时。
 ---
 
 # 机器人情报收集技能
@@ -16,7 +16,7 @@ description: 收集并整理具身智能与机器人领域的行业新闻、前�
 ## 产出物
 
 - Markdown：`D:\RobotGPT\content\Robot_Intel_YYYY-MM-DD.md`
-- HTML：`D:\RobotGPT\HTML\Robot_Intel_YYYY-MM-DD.html`
+- 微信排版预览：调用脚本 `D:\RobotGPT\robot-intel-collector\script\open_doocs_editor.py`，自动启动本地 DOOCS 编辑器、打开浏览器访问 `http://localhost:5173/md/`，并将 Markdown 自动填入左侧编辑区，由右侧实时预览微信排版
 - 可选封面图：`D:\RobotGPT\pics\...`
 
 ## 硬性规则
@@ -91,11 +91,20 @@ description: 收集并整理具身智能与机器人领域的行业新闻、前�
 10. 写 `## 结尾总结`，串联当天共性趋势，并给出一个互动问题。
 11. 在文档末尾追加两个固定段落：`## 关键词索引`（本篇涉及的公司名、技术术语、产品名）和 `## 值得分享`（3 条最值得转发给同事的要点）。
 12. 保存 Markdown 到 `D:\RobotGPT\content\`。
-13. 运行：
+13. 不再运行 Python 脚本将 Markdown 转换成 HTML。生成 Markdown 后，调用自动化脚本打开本地 DOOCS 编辑器并把 Markdown 注入左侧编辑区。DOOCS 本地项目目录位于：`D:\RobotGPT\HTML\doocs-md-local`。
 
-```bash
-python D:\RobotGPT\robot-intel-collector\script\doocs_wechat_converter.py <md文件路径> <html文件路径>
+运行：
+
+```powershell
+python D:\RobotGPT\robot-intel-collector\script\open_doocs_editor.py D:\RobotGPT\content\Robot_Intel_YYYY-MM-DD.md
 ```
+
+该脚本负责自动完成以下动作：
+
+- 检查 `http://localhost:5173/md/` 是否已可访问；如未启动，则在 `D:\RobotGPT\HTML\doocs-md-local` 中执行 `pnpm web dev` 启动本地 DOOCS 编辑器。
+- 自动打开浏览器并访问 `http://localhost:5173/md/`。
+- 读取生成的 Markdown 文件全文，并自动粘贴到 DOOCS 左侧 Markdown 编辑区。
+- 右侧微信排版预览会实时生成；确认预览无误后，使用 DOOCS 编辑器的复制按钮粘贴到微信公众号编辑器。
 
 14. 仅当用户明确要求版本控制操作时，再执行 git 提交或推送。
 
@@ -147,4 +156,5 @@ python D:\RobotGPT\robot-intel-collector\script\doocs_wechat_converter.py <md文
 ## 额外参考
 
 - 详细输出模板与字段约束见 [reference.md](reference.md)
-- 转换脚本位于 `script/doocs_wechat_converter.py`
+- 微信排版自动化脚本：`D:\RobotGPT\robot-intel-collector\script\open_doocs_editor.py`
+- 本地 DOOCS 编辑器目录：`D:\RobotGPT\HTML\doocs-md-local`，脚本会自动启动并打开 `http://localhost:5173/md/`
